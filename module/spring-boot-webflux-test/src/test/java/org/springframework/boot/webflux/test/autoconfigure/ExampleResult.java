@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-/**
- * Auto-configuration for WebTestClient.
- */
-@NullMarked
-package org.springframework.boot.webtestclient;
+package org.springframework.boot.webflux.test.autoconfigure;
 
-import org.jspecify.annotations.NullMarked;
+import org.springframework.boot.jackson.JacksonComponent;
+
+/**
+ * Example result that requires a {@link JacksonComponent}.
+ *
+ * @param id sample data
+ * @author Stephane Nicoll
+ */
+public record ExampleResult(String id) {
+}

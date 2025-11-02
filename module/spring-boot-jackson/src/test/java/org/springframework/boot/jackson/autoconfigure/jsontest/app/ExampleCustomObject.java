@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * Example object to read/write as JSON through {@link ExampleJsonComponent}.
+ * Example object to read/write as JSON through {@link ExampleJacksonComponent}.
  *
  * @author Phillip Webb
  * @param value the value

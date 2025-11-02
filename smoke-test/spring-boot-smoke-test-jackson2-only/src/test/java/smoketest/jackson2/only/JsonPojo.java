@@ -14,26 +14,33 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.webtestclient;
-
-import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.reactive.server.WebTestClient.Builder;
+package smoketest.jackson2.only;
 
 /**
- * A customizer that can be implemented by beans wishing to customize the {@link Builder
- * WebTestClient.Builder} to fine-tune its auto-configuration before a
- * {@link WebTestClient} is created.
+ * POJO for serialization to JSON.
  *
  * @author Andy Wilkinson
- * @since 4.0.0
  */
-@FunctionalInterface
-public interface WebTestClientBuilderCustomizer {
+class JsonPojo {
 
-	/**
-	 * Customize the given {@code builder}.
-	 * @param builder the builder
-	 */
-	void customize(WebTestClient.Builder builder);
+	private String alpha;
+
+	private String bravo;
+
+	String getAlpha() {
+		return this.alpha;
+	}
+
+	void setAlpha(String alpha) {
+		this.alpha = alpha;
+	}
+
+	String getBravo() {
+		return this.bravo;
+	}
+
+	void setBravo(String bravo) {
+		this.bravo = bravo;
+	}
 
 }

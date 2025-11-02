@@ -21,6 +21,8 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 import tools.jackson.databind.module.SimpleModule;
 
+import org.springframework.boot.jackson.JacksonComponent;
+import org.springframework.boot.jackson2.JsonComponent;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcRegistrations;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
@@ -60,6 +62,9 @@ class WebMvcTypeExcludeFilterTests {
 		assertThat(excludes(filter, ExampleRepository.class)).isTrue();
 		assertThat(excludes(filter, ExampleHandlerInterceptor.class)).isFalse();
 		assertThat(excludes(filter, ExampleModule.class)).isFalse();
+		assertThat(excludes(filter, ExampleJacksonComponent.class)).isFalse();
+		assertThat(excludes(filter, ExampleModule2.class)).isFalse();
+		assertThat(excludes(filter, ExampleJsonComponent.class)).isFalse();
 	}
 
 	@Test
@@ -75,6 +80,9 @@ class WebMvcTypeExcludeFilterTests {
 		assertThat(excludes(filter, ExampleRepository.class)).isTrue();
 		assertThat(excludes(filter, ExampleHandlerInterceptor.class)).isFalse();
 		assertThat(excludes(filter, ExampleModule.class)).isFalse();
+		assertThat(excludes(filter, ExampleJacksonComponent.class)).isFalse();
+		assertThat(excludes(filter, ExampleModule2.class)).isFalse();
+		assertThat(excludes(filter, ExampleJsonComponent.class)).isFalse();
 	}
 
 	@Test
@@ -90,6 +98,9 @@ class WebMvcTypeExcludeFilterTests {
 		assertThat(excludes(filter, ExampleRepository.class)).isTrue();
 		assertThat(excludes(filter, ExampleHandlerInterceptor.class)).isTrue();
 		assertThat(excludes(filter, ExampleModule.class)).isTrue();
+		assertThat(excludes(filter, ExampleJacksonComponent.class)).isTrue();
+		assertThat(excludes(filter, ExampleModule2.class)).isTrue();
+		assertThat(excludes(filter, ExampleJsonComponent.class)).isTrue();
 	}
 
 	@Test
@@ -105,6 +116,9 @@ class WebMvcTypeExcludeFilterTests {
 		assertThat(excludes(filter, ExampleRepository.class)).isFalse();
 		assertThat(excludes(filter, ExampleHandlerInterceptor.class)).isFalse();
 		assertThat(excludes(filter, ExampleModule.class)).isFalse();
+		assertThat(excludes(filter, ExampleJacksonComponent.class)).isFalse();
+		assertThat(excludes(filter, ExampleModule2.class)).isFalse();
+		assertThat(excludes(filter, ExampleJsonComponent.class)).isFalse();
 	}
 
 	@Test
@@ -120,6 +134,9 @@ class WebMvcTypeExcludeFilterTests {
 		assertThat(excludes(filter, ExampleRepository.class)).isTrue();
 		assertThat(excludes(filter, ExampleHandlerInterceptor.class)).isFalse();
 		assertThat(excludes(filter, ExampleModule.class)).isFalse();
+		assertThat(excludes(filter, ExampleJacksonComponent.class)).isFalse();
+		assertThat(excludes(filter, ExampleModule2.class)).isFalse();
+		assertThat(excludes(filter, ExampleJsonComponent.class)).isFalse();
 	}
 
 	private boolean excludes(WebMvcTypeExcludeFilter filter, Class<?> type) throws IOException {
@@ -195,6 +212,21 @@ class WebMvcTypeExcludeFilterTests {
 	}
 
 	static class ExampleModule extends SimpleModule {
+
+	}
+
+	@JacksonComponent
+	static class ExampleJacksonComponent {
+
+	}
+
+	static class ExampleModule2 extends com.fasterxml.jackson.databind.module.SimpleModule {
+
+	}
+
+	@JsonComponent
+	@SuppressWarnings("removal")
+	static class ExampleJsonComponent {
 
 	}
 

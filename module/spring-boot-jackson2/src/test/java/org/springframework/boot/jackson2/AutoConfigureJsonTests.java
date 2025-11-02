@@ -14,32 +14,36 @@
  * limitations under the License.
  */
 
-package org.springframework.boot.webmvc.test.autoconfigure.mockmvc;
+package org.springframework.boot.jackson2;
 
-import org.htmlunit.WebClient;
-import org.htmlunit.html.HtmlPage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link WebMvcTest @WebMvcTest} with {@link WebClient}.
+ * Tests for {@link AutoConfigureJson} with Jackson 2.
  *
- * @author Phillip Webb
+ * @author Moritz Halbritter
+ * @deprecated since 4.0.0 for removal in 4.2.0 in favor of Jackson 3
  */
-@WebMvcTest
-class WebMvcTestWebClientIntegrationTests {
+@AutoConfigureJson
+@ExtendWith(SpringExtension.class)
+@Deprecated(since = "4.0.0", forRemoval = true)
+class AutoConfigureJsonTests {
 
 	@Autowired
-	private WebClient webClient;
+	private ObjectProvider<ObjectMapper> objectMapper;
 
 	@Test
-	void shouldAutoConfigureWebClient() throws Exception {
-		HtmlPage page = this.webClient.getPage("/html");
-		assertThat(page.getBody().getTextContent()).isEqualTo("Hello");
+	void shouldAutowireObjectMapper() {
+		assertThat(this.objectMapper.getIfAvailable()).isNotNull();
 	}
 
 }
