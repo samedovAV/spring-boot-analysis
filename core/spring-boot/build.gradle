@@ -26,7 +26,20 @@ plugins {
 
 description = "Spring Boot"
 
+def thesisVersion = "1.2"
+
+// Replace adding the analyzer to `implementation` (which affects compilation and triggers NullAway)
+// with a dedicated configuration used only by the JavaExec task.
+configurations {
+	staticAnalyzer
+}
+
 dependencies {
+	// Provide annotation types at compile time only so imports like com.samedov.annotation.* resolve
+	compileOnly("com.samedov:thesis:$thesisVersion")
+
+	staticAnalyzer("com.samedov:thesis:$thesisVersion")
+
 	annotationProcessor("org.apache.logging.log4j:log4j-core")
 
 	api("org.springframework:spring-core")
@@ -93,6 +106,33 @@ tasks.named("compileJava") {
 	// Provide the project coordinates to the `GraalVmProcessor`:
 	options.compilerArgs << '-Alog4j.graalvm.groupId=org.springframework.boot'
 	options.compilerArgs << '-Alog4j.graalvm.artifactId=spring-boot-log4j'
+}
+
+// Request Java 25 via Gradle Java toolchains so compilation and JavaExec use the project JDK if available
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+// Ensure JavaCompile tasks use the toolchain (robust for different Gradle versions)
+tasks.withType(JavaCompile).configureEach { JavaCompile compileTask ->
+	compileTask.javaCompiler = javaToolchains.compilerFor { languageVersion = JavaLanguageVersion.of(25) }
+}
+
+// RUN COMMAND: ./gradlew :core:spring-boot:runStaticAnalysis -ProotDir=src/main/java
+tasks.register('runStaticAnalysis', JavaExec) {
+	// group = 'verification'
+	description = 'Runs static analysis for @Prove annotations.'
+	// Include project runtime classes and the analyzer JAR on the task classpath
+	classpath = sourceSets.main.runtimeClasspath + configurations.staticAnalyzer
+	// Set the main class to the analyzer entry point
+	mainClass = 'com.samedov.StaticAnalyzerMain'
+	systemProperty 'parallel', project.findProperty('parallel') ?: 'false'
+	// Use a launcher from the Java toolchain (requests Java 25)
+	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(25) }
+	// Ensure classes are compiled first
+	dependsOn tasks.named('classes')
 }
 
 plugins.withType(EclipsePlugin) {

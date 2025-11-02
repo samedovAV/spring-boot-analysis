@@ -34,6 +34,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolver;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * A collection of {@link ConfigDataLocationResolver} instances loaded via
  * {@code spring.factories}.
@@ -109,6 +112,7 @@ class ConfigDataLocationResolvers {
 		return merge(resolved, profileSpecific);
 	}
 
+	@Prove(complexity = Complexity.O_N, n = "", count = {})
 	private List<ConfigDataResolutionResult> resolve(ConfigDataLocation location, boolean profileSpecific,
 			Supplier<List<? extends ConfigDataResource>> resolveAction) {
 		List<ConfigDataResource> resources = nonNullList(resolveAction.get());
