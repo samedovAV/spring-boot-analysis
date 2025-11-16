@@ -128,11 +128,55 @@ tasks.register('runStaticAnalysis', JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath + configurations.staticAnalyzer
 	// Set the main class to the analyzer entry point
 	mainClass = 'com.samedov.StaticAnalyzerMain'
-	systemProperty 'parallel', project.findProperty('parallel') ?: 'false'
+	// Properties to pass to the analyzer
+	systemProperty 'parallelGlobal', project.findProperty('parallelGlobal') ?: 'false'
+	systemProperty 'parallelFile', project.findProperty('parallelFile') ?: 'false'
+	systemProperty 'rootDir', project.findProperty('rootDir') ?: 'src/main/java'
 	// Use a launcher from the Java toolchain (requests Java 25)
 	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(25) }
 	// Ensure classes are compiled first
 	dependsOn tasks.named('classes')
+}
+
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
+
+def timings = new ConcurrentHashMap<String, Long>()
+
+gradle.taskGraph.beforeTask { Task task ->
+	task.ext.startTime = System.nanoTime()
+}
+
+gradle.taskGraph.afterTask { Task task, TaskState state ->
+	if (task.hasProperty('startTime')) {
+		def duration = System.nanoTime() - task.ext.startTime
+		timings[task.path] = duration
+		def millis = TimeUnit.NANOSECONDS.toMillis(duration)
+		println("Task ${task.path} took ${millis} ms")
+	}
+}
+
+gradle.buildFinished {
+	println("\n" + "=".repeat(80))
+	println("Task Execution Timings Summary:")
+	println("=".repeat(80))
+
+	def sortedTimings = timings.entrySet().sort { -it.value }
+
+	sortedTimings.each { entry ->
+		def taskPath = entry.key
+		def durationMs = TimeUnit.NANOSECONDS.toMillis(entry.value)
+		printf("%-50s %8d ms%n", taskPath, durationMs)
+	}
+
+	println("=".repeat(80))
+
+	// Show total time for runStaticAnalysis if it ran
+	def analysisTime = timings[':core:spring-boot:runStaticAnalysis']
+	if (analysisTime != null) {
+		def analysisMs = TimeUnit.NANOSECONDS.toMillis(analysisTime)
+		println("\n>>> Static Analysis Total Time: ${analysisMs} ms (${String.format("%.2f", analysisMs / 1000.0)} seconds)")
+	}
 }
 
 plugins.withType(EclipsePlugin) {
