@@ -35,6 +35,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link EnvironmentPostProcessor} that loads and applies {@link ConfigData} to Spring's
  * {@link Environment}.
@@ -81,11 +84,13 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int getOrder() {
 		return ORDER;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 		postProcessEnvironment(environment, application.getResourceLoader(), application.getAdditionalProfiles());
 	}
@@ -109,6 +114,7 @@ public class ConfigDataEnvironmentPostProcessor implements EnvironmentPostProces
 	 * directly and not necessarily as part of a {@link SpringApplication}.
 	 * @param environment the environment to apply {@link ConfigData} to
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public static void applyTo(ConfigurableEnvironment environment) {
 		applyTo(environment, null, null, Collections.emptyList());
 	}

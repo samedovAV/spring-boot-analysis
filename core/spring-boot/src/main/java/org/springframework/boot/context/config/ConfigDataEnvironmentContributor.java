@@ -39,6 +39,9 @@ import org.springframework.lang.Contract;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * A single element that may directly or indirectly contribute configuration data to the
  * {@link Environment}. There are several {@link Kind kinds} of contributor, all are
@@ -120,6 +123,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * Return the contributor kind.
 	 * @return the kind of contributor
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Kind getKind() {
 		return this.kind;
 	}
@@ -133,6 +137,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param activationContext the activation context
 	 * @return if the contributor is active
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 		if (this.kind == Kind.UNBOUND_IMPORT) {
 			return false;
@@ -152,6 +157,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * Return if the contributor is from a profile specific import.
 	 * @return if the contributor is profile specific
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isFromProfileSpecificImport() {
 		return this.fromProfileSpecificImport;
 	}
@@ -177,10 +183,12 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param option the option to check
 	 * @return {@code true} if the option is present
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean hasConfigDataOption(ConfigData.Option option) {
 		return this.configDataOptions.contains(option);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataEnvironmentContributor withoutConfigDataOption(ConfigData.Option option) {
 		return new ConfigDataEnvironmentContributor(this.kind, this.location, this.resource,
 				this.fromProfileSpecificImport, this.propertySource, this.configurationPropertySource, this.properties,
@@ -191,6 +199,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * Return any imports requested by this contributor.
 	 * @return the imports
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	List<ConfigDataLocation> getImports() {
 		return (this.properties != null) ? this.properties.getImports() : Collections.emptyList();
 	}
@@ -201,6 +210,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param importPhase the import phase
 	 * @return if there are unprocessed imports
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean hasUnprocessedImports(ImportPhase importPhase) {
 		if (getImports().isEmpty()) {
 			return false;
@@ -213,6 +223,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @param importPhase the import phase
 	 * @return a list of children
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	List<ConfigDataEnvironmentContributor> getChildren(ImportPhase importPhase) {
 		return this.children.getOrDefault(importPhase, Collections.emptyList());
 	}
@@ -222,6 +233,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * priority order.
 	 * @return the stream
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Stream<ConfigDataEnvironmentContributor> stream() {
 		return StreamSupport.stream(spliterator(), false);
 	}
@@ -233,6 +245,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	 * @see java.lang.Iterable#iterator()
 	 */
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public Iterator<ConfigDataEnvironmentContributor> iterator() {
 		return new ContributorIterator();
 	}
@@ -280,6 +293,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 				this.configDataOptions, updatedChildren, this.conversionService);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void moveProfileSpecific(Map<ImportPhase, List<ConfigDataEnvironmentContributor>> children) {
 		List<ConfigDataEnvironmentContributor> before = children.get(ImportPhase.BEFORE_PROFILE_ACTIVATION);
 		if (!hasAnyProfileSpecificChildren(before)) {
@@ -314,6 +328,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	}
 
 	@Contract("null -> false")
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean hasAnyProfileSpecificChildren(@Nullable List<ConfigDataEnvironmentContributor> contributors) {
 		if (CollectionUtils.isEmpty(contributors)) {
 			return false;
@@ -357,12 +372,14 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		buildToString("", builder);
 		return builder.toString();
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void buildToString(String prefix, StringBuilder builder) {
 		builder.append(prefix);
 		builder.append(this.kind);
@@ -532,6 +549,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 		 * @param activationContext the activation context
 		 * @return the import phase
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		static ImportPhase get(@Nullable ConfigDataActivationContext activationContext) {
 			if (activationContext != null && activationContext.getProfiles() != null) {
 				return AFTER_PROFILE_ACTIVATION;
@@ -554,18 +572,20 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 
 		private @Nullable ConfigDataEnvironmentContributor next;
 
-		private ContributorIterator() {
+  private ContributorIterator() {
 			this.phase = ImportPhase.AFTER_PROFILE_ACTIVATION;
 			this.children = getChildren(this.phase).iterator();
 			this.current = Collections.emptyIterator();
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public boolean hasNext() {
 			return fetchIfNecessary() != null;
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public ConfigDataEnvironmentContributor next() {
 			ConfigDataEnvironmentContributor next = fetchIfNecessary();
 			if (next == null) {
@@ -575,6 +595,7 @@ class ConfigDataEnvironmentContributor implements Iterable<ConfigDataEnvironment
 			return next;
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		private @Nullable ConfigDataEnvironmentContributor fetchIfNecessary() {
 			if (this.next != null) {
 				return this.next;

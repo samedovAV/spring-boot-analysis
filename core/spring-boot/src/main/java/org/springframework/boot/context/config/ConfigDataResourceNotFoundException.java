@@ -26,6 +26,9 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataNotFoundException} thrown when a {@link ConfigDataResource} cannot be
  * found.
@@ -68,6 +71,7 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * Return the resource that could not be found.
 	 * @return the resource
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigDataResource getResource() {
 		return this.resource;
 	}
@@ -76,16 +80,19 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * Return the original location that was resolved to determine the resource.
 	 * @return the location or {@code null} if no location is available
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable ConfigDataLocation getLocation() {
 		return this.location;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable Origin getOrigin() {
 		return Origin.from(this.location);
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String getReferenceDescription() {
 		return getReferenceDescription(this.resource, this.location);
 	}
@@ -95,14 +102,17 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * @param location the location to set
 	 * @return a new {@link ConfigDataResourceNotFoundException} instance
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataResourceNotFoundException withLocation(ConfigDataLocation location) {
 		return new ConfigDataResourceNotFoundException(this.resource, location, getCause());
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private static String getMessage(ConfigDataResource resource, @Nullable ConfigDataLocation location) {
 		return String.format("Config data %s cannot be found", getReferenceDescription(resource, location));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private static String getReferenceDescription(ConfigDataResource resource, @Nullable ConfigDataLocation location) {
 		String description = String.format("resource '%s'", resource);
 		if (location != null) {
@@ -117,6 +127,7 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * @param resource the config data resource
 	 * @param pathToCheck the path to check
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public static void throwIfDoesNotExist(ConfigDataResource resource, Path pathToCheck) {
 		throwIfNot(resource, Files.exists(pathToCheck));
 	}
@@ -127,6 +138,7 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * @param resource the config data resource
 	 * @param fileToCheck the file to check
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public static void throwIfDoesNotExist(ConfigDataResource resource, File fileToCheck) {
 		throwIfNot(resource, fileToCheck.exists());
 	}
@@ -137,10 +149,12 @@ public class ConfigDataResourceNotFoundException extends ConfigDataNotFoundExcep
 	 * @param resource the config data resource
 	 * @param resourceToCheck the resource to check
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public static void throwIfDoesNotExist(ConfigDataResource resource, Resource resourceToCheck) {
 		throwIfNot(resource, resourceToCheck.exists());
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private static void throwIfNot(ConfigDataResource resource, boolean check) {
 		if (!check) {
 			throw new ConfigDataResourceNotFoundException(resource);

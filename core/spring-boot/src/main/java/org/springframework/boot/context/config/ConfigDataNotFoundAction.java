@@ -20,6 +20,9 @@ import org.apache.commons.logging.Log;
 
 import org.springframework.core.log.LogMessage;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Action to take when an uncaught {@link ConfigDataNotFoundException} is thrown.
  *
@@ -34,6 +37,7 @@ public enum ConfigDataNotFoundAction {
 	FAIL {
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		void handle(Log logger, ConfigDataNotFoundException ex) {
 			throw ex;
 		}
@@ -46,6 +50,7 @@ public enum ConfigDataNotFoundAction {
 	IGNORE {
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		void handle(Log logger, ConfigDataNotFoundException ex) {
 			logger.trace(LogMessage.format("Ignoring missing config data %s", ex.getReferenceDescription()));
 		}
@@ -57,6 +62,7 @@ public enum ConfigDataNotFoundAction {
 	 * @param logger the logger used for output {@code ConfigDataLocation})
 	 * @param ex the exception to handle
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	abstract void handle(Log logger, ConfigDataNotFoundException ex);
 
 }

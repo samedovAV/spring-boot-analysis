@@ -47,6 +47,9 @@ import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Wrapper around a {@link ConfigurableEnvironment} that can be used to import and apply
  * {@link ConfigData}. Configures the initial set of
@@ -162,6 +165,7 @@ class ConfigDataEnvironment {
 				SpringFactoriesLoader.forDefaultResourceLocation(resourceLoader.getClassLoader()));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private ConfigDataEnvironmentContributors createContributors(Binder binder) {
 		this.logger.trace("Building config data environment contributors");
 		MutablePropertySources propertySources = this.environment.getPropertySources();
@@ -193,10 +197,12 @@ class ConfigDataEnvironment {
 				this.environment.getConversionService(), this.environmentUpdateListener);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataEnvironmentContributors getContributors() {
 		return this.contributors;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<ConfigDataEnvironmentContributor> getInitialImportContributors(Binder binder) {
 		List<ConfigDataEnvironmentContributor> initialContributors = new ArrayList<>();
 		addInitialImportContributors(initialContributors, bindLocations(binder, IMPORT_PROPERTY, EMPTY_LOCATIONS));
@@ -207,6 +213,7 @@ class ConfigDataEnvironment {
 		return initialContributors;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private ConfigDataLocation[] bindLocations(Binder binder, String propertyName, ConfigDataLocation[] other) {
 		return binder.bind(propertyName, CONFIG_DATA_LOCATION_ARRAY).orElse(other);
 	}
@@ -220,6 +227,7 @@ class ConfigDataEnvironment {
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private ConfigDataEnvironmentContributor createInitialImportContributor(ConfigDataLocation location) {
 		this.logger.trace(LogMessage.format("Adding initial config data import from location '%s'", location));
 		return ConfigDataEnvironmentContributor.ofInitialImport(location, this.environment.getConversionService());
@@ -229,6 +237,7 @@ class ConfigDataEnvironment {
 	 * Process all contributions and apply any newly imported property sources to the
 	 * {@link Environment}.
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	void processAndApply() {
 		ConfigDataImporter importer = new ConfigDataImporter(this.logFactory, this.notFoundAction, this.resolvers,
 				this.loaders);
@@ -251,6 +260,7 @@ class ConfigDataEnvironment {
 		return contributors;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private ConfigDataActivationContext createActivationContext(Binder initialBinder) {
 		this.logger.trace("Creating config data activation context from initial contributions");
 		try {
@@ -369,6 +379,7 @@ class ConfigDataEnvironment {
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void checkForInvalidProperties(ConfigDataEnvironmentContributors contributors) {
 		for (ConfigDataEnvironmentContributor contributor : contributors) {
 			InvalidConfigDataPropertyException.throwIfPropertyFound(contributor);
@@ -398,6 +409,7 @@ class ConfigDataEnvironment {
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Set<ConfigDataLocation> getMandatoryImports(ConfigDataEnvironmentContributor contributor) {
 		List<ConfigDataLocation> imports = contributor.getImports();
 		Set<ConfigDataLocation> mandatoryLocations = new LinkedHashSet<>(imports.size());

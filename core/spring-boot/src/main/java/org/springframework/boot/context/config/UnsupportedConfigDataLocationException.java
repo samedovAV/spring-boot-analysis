@@ -16,6 +16,9 @@
 
 package org.springframework.boot.context.config;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Exception throw if a {@link ConfigDataLocation} is not supported.
  *
@@ -40,6 +43,7 @@ public class UnsupportedConfigDataLocationException extends ConfigDataException 
 	 * Return the unsupported location reference.
 	 * @return the unsupported location reference
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigDataLocation getLocation() {
 		return this.location;
 	}

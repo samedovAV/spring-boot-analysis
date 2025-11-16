@@ -31,6 +31,9 @@ import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.util.ResourceUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link RuntimeHintsRegistrar} implementation for application configuration.
  *
@@ -42,6 +45,7 @@ class ConfigDataLocationRuntimeHints implements RuntimeHintsRegistrar {
 	private static final Log logger = LogFactory.getLog(ConfigDataLocationRuntimeHints.class);
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
 		List<String> fileNames = getFileNames(classLoader);
 		List<String> locations = getLocations(classLoader);
@@ -61,6 +65,7 @@ class ConfigDataLocationRuntimeHints implements RuntimeHintsRegistrar {
 	 * @param classLoader the classloader to use
 	 * @return the configuration file names
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	protected List<String> getFileNames(@Nullable ClassLoader classLoader) {
 		return Arrays.asList(StandardConfigDataLocationResolver.DEFAULT_CONFIG_NAMES);
 	}
@@ -71,6 +76,7 @@ class ConfigDataLocationRuntimeHints implements RuntimeHintsRegistrar {
 	 * @param classLoader the classloader to use
 	 * @return the configuration file locations
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	protected List<String> getLocations(@Nullable ClassLoader classLoader) {
 		List<String> classpathLocations = new ArrayList<>();
 		for (ConfigDataLocation candidate : ConfigDataEnvironment.DEFAULT_SEARCH_LOCATIONS) {
@@ -90,6 +96,7 @@ class ConfigDataLocationRuntimeHints implements RuntimeHintsRegistrar {
 	 * @param classLoader the classloader to use
 	 * @return the configuration file extensions
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	protected List<String> getExtensions(@Nullable ClassLoader classLoader) {
 		List<String> extensions = new ArrayList<>();
 		List<PropertySourceLoader> propertySourceLoaders = getSpringFactoriesLoader(classLoader)
@@ -105,6 +112,7 @@ class ConfigDataLocationRuntimeHints implements RuntimeHintsRegistrar {
 		return extensions;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	protected SpringFactoriesLoader getSpringFactoriesLoader(@Nullable ClassLoader classLoader) {
 		return SpringFactoriesLoader.forDefaultResourceLocation(classLoader);
 	}

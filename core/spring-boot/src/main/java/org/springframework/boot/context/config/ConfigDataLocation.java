@@ -23,6 +23,9 @@ import org.springframework.boot.origin.OriginProvider;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * A user specified location that can be {@link ConfigDataLocationResolver resolved} to
  * one or more {@link ConfigDataResource config data resources}. A
@@ -62,6 +65,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * {@link ConfigDataNotFoundException}.
 	 * @return if the location is optional
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean isOptional() {
 		return this.optional;
 	}
@@ -71,6 +75,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * {@code optional:} prefix).
 	 * @return the location value
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String getValue() {
 		return this.value;
 	}
@@ -80,6 +85,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @param prefix the prefix to check
 	 * @return if the value has the prefix
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean hasPrefix(String prefix) {
 		return this.value.startsWith(prefix);
 	}
@@ -90,11 +96,13 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @param prefix the prefix to check
 	 * @return the value with the prefix removed
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String getNonPrefixedValue(String prefix) {
 		return (!hasPrefix(prefix)) ? this.value : this.value.substring(prefix.length());
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable Origin getOrigin() {
 		return this.origin;
 	}
@@ -105,6 +113,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @return the split locations
 	 * @since 2.4.7
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigDataLocation[] split() {
 		return split(";");
 	}
@@ -116,6 +125,7 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @return the split locations
 	 * @since 2.4.7
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigDataLocation[] split(String delimiter) {
 		Assert.state(!this.value.isEmpty(), "Unable to split empty locations");
 		String[] values = StringUtils.delimitedListToStringArray(toString(), delimiter);
@@ -133,11 +143,13 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @param origin the origin to set
 	 * @return a new {@link ConfigDataLocation} instance.
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataLocation withOrigin(@Nullable Origin origin) {
 		return new ConfigDataLocation(this.optional, this.value, origin);
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -150,11 +162,13 @@ public final class ConfigDataLocation implements OriginProvider {
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int hashCode() {
 		return this.value.hashCode();
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		return (!this.optional) ? this.value : OPTIONAL_PREFIX + this.value;
 	}
@@ -164,12 +178,14 @@ public final class ConfigDataLocation implements OriginProvider {
 	 * @param location the location string
 	 * @return the {@link ConfigDataLocation} (which may be empty)
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public static ConfigDataLocation of(@Nullable String location) {
 		boolean optional = location != null && location.startsWith(OPTIONAL_PREFIX);
 		String value = (location != null && optional) ? location.substring(OPTIONAL_PREFIX.length()) : location;
 		return (StringUtils.hasText(value)) ? new ConfigDataLocation(optional, value, null) : EMPTY;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static boolean isNotEmpty(@Nullable ConfigDataLocation location) {
 		return (location != null) && !location.getValue().isEmpty();
 	}

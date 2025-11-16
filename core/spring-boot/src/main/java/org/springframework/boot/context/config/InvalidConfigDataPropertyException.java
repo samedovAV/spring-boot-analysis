@@ -29,6 +29,9 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.core.env.AbstractEnvironment;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Exception thrown if an invalid property is found when processing config data.
  *
@@ -78,6 +81,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * Return source property that caused the exception.
 	 * @return the invalid property
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigurationProperty getProperty() {
 		return this.property;
 	}
@@ -87,6 +91,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * the source was not loaded from {@link ConfigData}.
 	 * @return the config data location or {@code null}
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable ConfigDataResource getLocation() {
 		return this.location;
 	}
@@ -96,6 +101,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * replacement is available.
 	 * @return the replacement property name
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable ConfigurationPropertyName getReplacement() {
 		return this.replacement;
 	}
@@ -105,6 +111,7 @@ public class InvalidConfigDataPropertyException extends ConfigDataException {
 	 * {@link ConfigDataEnvironmentContributor} contains any invalid property.
 	 * @param contributor the contributor to check
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor) {
 		ConfigurationPropertySource propertySource = contributor.getConfigurationPropertySource();
 		if (propertySource != null) {

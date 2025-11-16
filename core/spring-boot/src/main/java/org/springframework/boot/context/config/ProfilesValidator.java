@@ -32,6 +32,9 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link BindHandler} that validates profile names.
  *
@@ -49,11 +52,13 @@ final class ProfilesValidator implements BindHandler {
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public Object onSuccess(ConfigurationPropertyName name, Bindable<?> target, BindContext context, Object result) {
 		validate(result);
 		return result;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	void validate(Object value, Supplier<String> wrappedExceptionMessage) {
 		try {
 			validate(value);
@@ -63,6 +68,7 @@ final class ProfilesValidator implements BindHandler {
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void validate(@Nullable Object value) {
 		if (!this.validate) {
 			return;
@@ -89,6 +95,7 @@ final class ProfilesValidator implements BindHandler {
 
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static ProfilesValidator get(Binder binder) {
 		return new ProfilesValidator(binder.bind("spring.profiles.validate", Boolean.class).orElse(true));
 	}

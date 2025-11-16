@@ -22,6 +22,9 @@ import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.boot.bootstrap.ConfigurableBootstrapContext;
 import org.springframework.boot.context.properties.bind.Binder;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Context provided to {@link ConfigDataLocationResolver} methods.
  *
@@ -36,6 +39,7 @@ public interface ConfigDataLocationResolverContext {
 	 * values.
 	 * @return a binder instance
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Binder getBinder();
 
 	/**
@@ -50,6 +54,7 @@ public interface ConfigDataLocationResolverContext {
 	 * {@link EnvironmentPostProcessor EnvironmentPostProcessors}.
 	 * @return the bootstrap context
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigurableBootstrapContext getBootstrapContext();
 
 }

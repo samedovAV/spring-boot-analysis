@@ -26,6 +26,9 @@ import org.springframework.boot.origin.OriginTrackedResource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataLoader} for {@link Resource} backed locations.
  *
@@ -40,6 +43,7 @@ public class StandardConfigDataLoader implements ConfigDataLoader<StandardConfig
 	private static final PropertySourceOptions NON_PROFILE_SPECIFIC = PropertySourceOptions.ALWAYS_NONE;
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigData load(ConfigDataLoaderContext context, StandardConfigDataResource resource)
 			throws IOException, ConfigDataNotFoundException {
 		if (resource.isEmptyDirectory()) {

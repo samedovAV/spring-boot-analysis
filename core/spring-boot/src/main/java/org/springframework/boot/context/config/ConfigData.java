@@ -31,6 +31,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Configuration data that has been loaded from a {@link ConfigDataResource} and may
  * ultimately contribute {@link PropertySource property sources} to Spring's
@@ -86,6 +89,7 @@ public final class ConfigData {
 	 * win.
 	 * @return the config data property sources
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public List<PropertySource<?>> getPropertySources() {
 		return this.propertySources;
 	}
@@ -96,6 +100,7 @@ public final class ConfigData {
 	 * @return the options that apply
 	 * @since 2.4.5
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public Options getOptions(PropertySource<?> propertySource) {
 		Options options = this.propertySourceOptions.get(propertySource);
 		return (options != null) ? options : Options.NONE;
@@ -130,6 +135,7 @@ public final class ConfigData {
 		 * @param options the options to return
 		 * @return a new {@link PropertySourceOptions} instance
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		static PropertySourceOptions always(Option... options) {
 			return always(Options.of(options));
 		}
@@ -140,6 +146,7 @@ public final class ConfigData {
 		 * @param options the options to return
 		 * @return a new {@link PropertySourceOptions} instance
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		static PropertySourceOptions always(Options options) {
 			if (options == Options.NONE) {
 				return ALWAYS_NONE;
@@ -161,6 +168,7 @@ public final class ConfigData {
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public Options get(PropertySource<?> propertySource) {
 			return this.options;
 		}
@@ -181,10 +189,11 @@ public final class ConfigData {
 
 		private final Set<Option> options;
 
-		private Options(Set<Option> options) {
+  private Options(Set<Option> options) {
 			this.options = Collections.unmodifiableSet(options);
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		Set<Option> asSet() {
 			return this.options;
 		}
@@ -194,11 +203,13 @@ public final class ConfigData {
 		 * @param option the option to check
 		 * @return {@code true} of the option is present
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public boolean contains(Option option) {
 			return this.options.contains(option);
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public boolean equals(Object obj) {
 			if (this == obj) {
 				return true;
@@ -211,11 +222,13 @@ public final class ConfigData {
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public int hashCode() {
 			return this.options.hashCode();
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public String toString() {
 			return this.options.toString();
 		}
@@ -226,6 +239,7 @@ public final class ConfigData {
 		 * @param option the option to exclude
 		 * @return a new {@link Options} instance
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public Options without(Option option) {
 			return copy((options) -> options.remove(option));
 		}
@@ -236,10 +250,12 @@ public final class ConfigData {
 		 * @param option the option to include
 		 * @return a new {@link Options} instance
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public Options with(Option option) {
 			return copy((options) -> options.add(option));
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		private Options copy(Consumer<EnumSet<Option>> processor) {
 			EnumSet<Option> options = (!this.options.isEmpty()) ? EnumSet.copyOf(this.options)
 					: EnumSet.noneOf(Option.class);
@@ -252,6 +268,7 @@ public final class ConfigData {
 		 * @param options the options to include
 		 * @return a new {@link Options} instance
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public static Options of(Option... options) {
 			Assert.notNull(options, "'options' must not be null");
 			if (options.length == 0) {

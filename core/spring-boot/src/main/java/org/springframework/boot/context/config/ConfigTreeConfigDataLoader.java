@@ -23,6 +23,9 @@ import java.util.Collections;
 import org.springframework.boot.env.ConfigTreePropertySource;
 import org.springframework.boot.env.ConfigTreePropertySource.Option;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataLoader} for config tree locations.
  *
@@ -33,6 +36,7 @@ import org.springframework.boot.env.ConfigTreePropertySource.Option;
 public class ConfigTreeConfigDataLoader implements ConfigDataLoader<ConfigTreeConfigDataResource> {
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigData load(ConfigDataLoaderContext context, ConfigTreeConfigDataResource resource)
 			throws IOException, ConfigDataResourceNotFoundException {
 		Path path = resource.getPath();

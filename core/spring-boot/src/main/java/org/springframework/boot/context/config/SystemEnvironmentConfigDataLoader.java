@@ -21,6 +21,9 @@ import java.util.List;
 
 import org.springframework.core.env.PropertySource;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataLoader} to load data from system environment variables.
  *
@@ -29,6 +32,7 @@ import org.springframework.core.env.PropertySource;
 class SystemEnvironmentConfigDataLoader implements ConfigDataLoader<SystemEnvironmentConfigDataResource> {
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigData load(ConfigDataLoaderContext context, SystemEnvironmentConfigDataResource resource)
 			throws IOException, ConfigDataResourceNotFoundException {
 		List<PropertySource<?>> loaded = resource.load();

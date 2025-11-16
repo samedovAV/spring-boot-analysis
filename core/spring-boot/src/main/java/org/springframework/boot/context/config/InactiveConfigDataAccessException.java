@@ -25,6 +25,9 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Exception thrown when an attempt is made to resolve a property against an inactive
  * {@link ConfigData} property source. Used to ensure that a user doesn't accidentally
@@ -84,6 +87,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the inactive property source that contained the property.
 	 * @return the property source
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public PropertySource<?> getPropertySource() {
 		return this.propertySource;
 	}
@@ -93,6 +97,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * source was not loaded from {@link ConfigData}.
 	 * @return the config data location or {@code null}
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable ConfigDataResource getLocation() {
 		return this.location;
 	}
@@ -101,6 +106,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the name of the property.
 	 * @return the property name
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String getPropertyName() {
 		return this.propertyName;
 	}
@@ -109,6 +115,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * Return the origin or the property or {@code null}.
 	 * @return the property origin
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable Origin getOrigin() {
 		return this.origin;
 	}
@@ -119,6 +126,7 @@ public class InactiveConfigDataAccessException extends ConfigDataException {
 	 * @param contributor the contributor to check
 	 * @param name the name to check
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static void throwIfPropertyFound(ConfigDataEnvironmentContributor contributor, ConfigurationPropertyName name) {
 		ConfigurationPropertySource source = contributor.getConfigurationPropertySource();
 		ConfigurationProperty property = (source != null) ? source.getConfigurationProperty(name) : null;

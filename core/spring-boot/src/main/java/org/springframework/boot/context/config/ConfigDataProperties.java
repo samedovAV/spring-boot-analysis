@@ -30,6 +30,9 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Bound properties used when working with {@link ConfigData}.
  *
@@ -62,6 +65,7 @@ class ConfigDataProperties {
 	 * Return any additional imports requested.
 	 * @return the requested imports
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	List<ConfigDataLocation> getImports() {
 		return this.imports;
 	}
@@ -72,6 +76,7 @@ class ConfigDataProperties {
 	 * @param activationContext the activation context
 	 * @return {@code true} if the config data property source is active
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 		return this.activate == null || this.activate.isActive(activationContext);
 	}
@@ -80,6 +85,7 @@ class ConfigDataProperties {
 	 * Return a new variant of these properties without any imports.
 	 * @return a new {@link ConfigDataProperties} instance
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataProperties withoutImports() {
 		return new ConfigDataProperties(null, this.activate);
 	}
@@ -90,6 +96,7 @@ class ConfigDataProperties {
 	 * @param binder the binder used to bind the properties
 	 * @return a {@link ConfigDataProperties} instance or {@code null}
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static @Nullable ConfigDataProperties get(Binder binder) {
 		return binder.bind(NAME, BINDABLE_PROPERTIES, new ConfigDataLocationBindHandler()).orElse(null);
 	}
@@ -119,6 +126,7 @@ class ConfigDataProperties {
 		 * @param activationContext the activation context
 		 * @return {@code true} if the config data property source is active
 		 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		boolean isActive(@Nullable ConfigDataActivationContext activationContext) {
 			if (activationContext == null) {
 				return false;
@@ -129,15 +137,18 @@ class ConfigDataProperties {
 			return activate;
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		private boolean isActive(CloudPlatform cloudPlatform) {
 			return this.onCloudPlatform == null || this.onCloudPlatform == cloudPlatform;
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		private boolean isActive(@Nullable Profiles profiles) {
 			return ObjectUtils.isEmpty(this.onProfile)
 					|| (profiles != null && matchesActiveProfiles(profiles::isAccepted));
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		private boolean matchesActiveProfiles(Predicate<String> activeProfiles) {
 			Assert.state(this.onProfile != null, "'this.onProfile' must not be null");
 			return org.springframework.core.env.Profiles.of(this.onProfile).matches(activeProfiles);

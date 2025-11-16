@@ -16,6 +16,9 @@
 
 package org.springframework.boot.context.config;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Result returned from {@link ConfigDataLocationResolvers} containing both the
  * {@link ConfigDataResource} and the original {@link ConfigDataLocation}.
@@ -36,14 +39,17 @@ class ConfigDataResolutionResult {
 		this.profileSpecific = profileSpecific;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataLocation getLocation() {
 		return this.location;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataResource getResource() {
 		return this.resource;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isProfileSpecific() {
 		return this.profileSpecific;
 	}

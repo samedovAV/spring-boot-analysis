@@ -23,6 +23,9 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.style.ToStringCreator;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Context information used when determining when to activate
  * {@link ConfigDataEnvironmentContributor contributed} {@link ConfigData}.
@@ -57,6 +60,7 @@ class ConfigDataActivationContext {
 		this.profiles = profiles;
 	}
 
+	@Prove(complexity = Complexity.O_N, n = "", count = {})
 	private @Nullable CloudPlatform deduceCloudPlatform(Environment environment, Binder binder) {
 		for (CloudPlatform candidate : CloudPlatform.values()) {
 			if (candidate.isEnforced(binder)) {
@@ -71,6 +75,7 @@ class ConfigDataActivationContext {
 	 * @param profiles the profiles
 	 * @return a new {@link ConfigDataActivationContext} with specific profiles
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataActivationContext withProfiles(Profiles profiles) {
 		return new ConfigDataActivationContext(this.cloudPlatform, profiles);
 	}
@@ -79,6 +84,7 @@ class ConfigDataActivationContext {
 	 * Return the active {@link CloudPlatform} or {@code null}.
 	 * @return the active cloud platform
 	 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 	@Nullable CloudPlatform getCloudPlatform() {
 		return this.cloudPlatform;
 	}
@@ -87,10 +93,12 @@ class ConfigDataActivationContext {
 	 * Return profile information if it is available.
 	 * @return profile information or {@code null}
 	 */
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 	@Nullable Profiles getProfiles() {
 		return this.profiles;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	@Override
 	public String toString() {
 		ToStringCreator creator = new ToStringCreator(this);

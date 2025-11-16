@@ -22,6 +22,9 @@ import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.origin.Origin;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * An implementation of {@link AbstractFailureAnalyzer} to analyze failures caused by
  * {@link ConfigDataNotFoundException}.
@@ -32,6 +35,7 @@ import org.springframework.boot.origin.Origin;
 class ConfigDataNotFoundFailureAnalyzer extends AbstractFailureAnalyzer<ConfigDataNotFoundException> {
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	protected FailureAnalysis analyze(Throwable rootFailure, ConfigDataNotFoundException cause) {
 		ConfigDataLocation location = getLocation(cause);
 		Origin origin = Origin.from(location);
@@ -50,6 +54,7 @@ class ConfigDataNotFoundFailureAnalyzer extends AbstractFailureAnalyzer<ConfigDa
 		return new FailureAnalysis(message, action.toString(), cause);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private @Nullable ConfigDataLocation getLocation(ConfigDataNotFoundException cause) {
 		if (cause instanceof ConfigDataLocationNotFoundException locationNotFoundException) {
 			return locationNotFoundException.getLocation();

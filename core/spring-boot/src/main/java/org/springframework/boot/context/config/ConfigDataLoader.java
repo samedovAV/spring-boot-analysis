@@ -25,6 +25,9 @@ import org.springframework.boot.bootstrap.BootstrapRegistry;
 import org.springframework.boot.bootstrap.ConfigurableBootstrapContext;
 import org.springframework.boot.logging.DeferredLogFactory;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Strategy class that can be used to load {@link ConfigData} for a given
  * {@link ConfigDataResource}. Implementations should be added as {@code spring.factories}
@@ -51,6 +54,7 @@ public interface ConfigDataLoader<R extends ConfigDataResource> {
 	 * @param resource the resource to check.
 	 * @return if the resource is supported by this loader
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	default boolean isLoadable(ConfigDataLoaderContext context, R resource) {
 		return true;
 	}

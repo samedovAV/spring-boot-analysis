@@ -31,6 +31,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Strategy interface for loading resources from a location. Supports single resource and
  * simple wildcard directory patterns.
@@ -61,6 +64,7 @@ class LocationResourceLoader {
 	 * @param location the location to check
 	 * @return if the location is a pattern
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isPattern(String location) {
 		return StringUtils.hasLength(location) && location.contains("*");
 	}
@@ -71,6 +75,7 @@ class LocationResourceLoader {
 	 * @return the resource
 	 * @see #isPattern(String)
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Resource getResource(String location) {
 		validateNonPattern(location);
 		location = StringUtils.cleanPath(location);
@@ -80,6 +85,7 @@ class LocationResourceLoader {
 		return this.resourceLoader.getResource(location);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void validateNonPattern(String location) {
 		Assert.state(!isPattern(location), () -> String.format("Location '%s' must not be a pattern", location));
 	}
@@ -91,6 +97,7 @@ class LocationResourceLoader {
 	 * @return the resources
 	 * @see #isPattern(String)
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Resource[] getResources(String location, ResourceType type) {
 		validatePattern(location, type);
 		String directoryPath = location.substring(0, location.indexOf("*/"));
@@ -123,6 +130,7 @@ class LocationResourceLoader {
 		return resources.toArray(EMPTY_RESOURCES);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void validatePattern(String location, ResourceType type) {
 		Assert.state(isPattern(location), () -> String.format("Location '%s' must be a pattern", location));
 		Assert.state(!location.startsWith(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX),
@@ -134,6 +142,7 @@ class LocationResourceLoader {
 		Assert.state(directoryPath.endsWith("*/"), () -> String.format("Location '%s' must end with '*/'", location));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private File getFile(String patternLocation, Resource resource) {
 		try {
 			return resource.getFile();
@@ -144,6 +153,7 @@ class LocationResourceLoader {
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean isVisibleDirectory(File file) {
 		return file.isDirectory() && !file.getName().startsWith("..");
 	}

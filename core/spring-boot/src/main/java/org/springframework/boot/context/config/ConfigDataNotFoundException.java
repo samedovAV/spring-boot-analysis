@@ -20,6 +20,9 @@ import org.jspecify.annotations.Nullable;
 
 import org.springframework.boot.origin.OriginProvider;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataNotFoundException} thrown when a {@link ConfigData} cannot be found.
  *
@@ -41,6 +44,7 @@ public abstract class ConfigDataNotFoundException extends ConfigDataException im
 	 * Return a description of actual referenced item that could not be found.
 	 * @return a description of the referenced items
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public abstract String getReferenceDescription();
 
 }

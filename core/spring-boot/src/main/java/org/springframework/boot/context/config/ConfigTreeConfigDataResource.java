@@ -23,6 +23,9 @@ import java.util.Objects;
 import org.springframework.boot.env.ConfigTreePropertySource;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataResource} backed by a config tree directory.
  *
@@ -45,11 +48,13 @@ public class ConfigTreeConfigDataResource extends ConfigDataResource {
 		this.path = path.toAbsolutePath();
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Path getPath() {
 		return this.path;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -62,11 +67,13 @@ public class ConfigTreeConfigDataResource extends ConfigDataResource {
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int hashCode() {
 		return this.path.hashCode();
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		return "config tree [" + this.path + "]";
 	}

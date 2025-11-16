@@ -28,6 +28,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.SystemPropertyUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link PlaceholdersResolver} backed by one or more
  * {@link ConfigDataEnvironmentContributor} instances.
@@ -65,6 +68,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable Object resolvePlaceholders(@Nullable Object value) {
 		if (value instanceof String string) {
 			return this.helper.replacePlaceholders(string, this::resolvePlaceholder);
@@ -72,6 +76,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 		return value;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private @Nullable String resolvePlaceholder(String placeholder) {
 		Object result = null;
 		for (ConfigDataEnvironmentContributor contributor : this.contributors) {
@@ -91,6 +96,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 		return (result != null) ? convertValueIfNecessary(result) : null;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean isActive(ConfigDataEnvironmentContributor contributor) {
 		if (contributor == this.activeContributor) {
 			return true;
@@ -102,6 +108,7 @@ class ConfigDataEnvironmentContributorPlaceholdersResolver implements Placeholde
 			.isActive(this.activationContext);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private @Nullable String convertValueIfNecessary(Object value) {
 		return (value instanceof String string) ? string : this.conversionService.convert(value, String.class);
 	}

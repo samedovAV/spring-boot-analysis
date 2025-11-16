@@ -34,6 +34,9 @@ import org.springframework.core.io.support.SpringFactoriesLoader.ArgumentResolve
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * A collection of {@link ConfigDataLoader} instances loaded through
  * {@code spring.factories}.
@@ -71,6 +74,7 @@ class ConfigDataLoaders {
 	}
 
 	@SuppressWarnings("rawtypes")
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<Class<?>> getResourceTypes(List<ConfigDataLoader> loaders) {
 		List<Class<?>> resourceTypes = new ArrayList<>(loaders.size());
 		for (ConfigDataLoader<?> loader : loaders) {
@@ -79,6 +83,7 @@ class ConfigDataLoaders {
 		return Collections.unmodifiableList(resourceTypes);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Class<?> getResourceType(ConfigDataLoader<?> loader) {
 		Class<?> generic = ResolvableType.forClass(loader.getClass()).as(ConfigDataLoader.class).resolveGeneric();
 		Assert.state(generic != null, "'generic' must not be null");
@@ -93,6 +98,7 @@ class ConfigDataLoaders {
 	 * @return the loaded {@link ConfigData}
 	 * @throws IOException on IO error
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	<R extends ConfigDataResource> @Nullable ConfigData load(ConfigDataLoaderContext context, R resource)
 			throws IOException {
 		ConfigDataLoader<R> loader = getLoader(context, resource);
@@ -101,6 +107,7 @@ class ConfigDataLoaders {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private <R extends ConfigDataResource> ConfigDataLoader<R> getLoader(ConfigDataLoaderContext context, R resource) {
 		ConfigDataLoader<R> result = null;
 		for (int i = 0; i < this.loaders.size(); i++) {

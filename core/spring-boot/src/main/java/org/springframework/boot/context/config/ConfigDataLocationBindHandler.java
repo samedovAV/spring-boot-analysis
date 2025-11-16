@@ -31,6 +31,9 @@ import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.origin.Origin;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link BindHandler} to set the {@link Origin} of bound {@link ConfigDataLocation}
  * objects.

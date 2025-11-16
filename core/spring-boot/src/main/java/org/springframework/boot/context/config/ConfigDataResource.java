@@ -16,6 +16,9 @@
 
 package org.springframework.boot.context.config;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * A single resource from which {@link ConfigData} can be loaded. Implementations must
  * implement a valid {@link #equals(Object) equals}, {@link #hashCode() hashCode} and
@@ -45,6 +48,7 @@ public abstract class ConfigDataResource {
 		this.optional = optional;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isOptional() {
 		return this.optional;
 	}

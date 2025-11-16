@@ -21,6 +21,9 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.boot.origin.Origin;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataNotFoundException} thrown when a {@link ConfigDataLocation} cannot be
  * found.
@@ -66,24 +69,29 @@ public class ConfigDataLocationNotFoundException extends ConfigDataNotFoundExcep
 	 * Return the location that could not be found.
 	 * @return the location
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public ConfigDataLocation getLocation() {
 		return this.location;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable Origin getOrigin() {
 		return Origin.from(this.location);
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String getReferenceDescription() {
 		return getReferenceDescription(this.location);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private static String getMessage(ConfigDataLocation location) {
 		return String.format("Config data %s cannot be found", getReferenceDescription(location));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private static String getReferenceDescription(ConfigDataLocation location) {
 		return String.format("location '%s'", location);
 	}

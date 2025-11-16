@@ -26,6 +26,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataLocationResolver} for config tree locations.
  *
@@ -44,6 +47,7 @@ public class ConfigTreeConfigDataLocationResolver implements ConfigDataLocationR
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
 		return location.hasPrefix(PREFIX);
 	}
@@ -59,6 +63,7 @@ public class ConfigTreeConfigDataLocationResolver implements ConfigDataLocationR
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<ConfigTreeConfigDataResource> resolve(String location) throws IOException {
 		Assert.state(location.endsWith("/"),
 				() -> String.format("Config tree location '%s' must end with '/'", location));

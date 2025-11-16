@@ -25,6 +25,9 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataLocationResolver} to resolve {@code env:} locations.
  *
@@ -54,6 +57,7 @@ class SystemEnvironmentConfigDataLocationResolver
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
 		return location.hasPrefix(PREFIX);
 	}
@@ -76,6 +80,7 @@ class SystemEnvironmentConfigDataLocationResolver
 				"Environment variable '%s' is not set".formatted(variableName), null);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private PropertySourceLoader getLoader(String extension) {
 		extension = (!extension.startsWith(".")) ? extension : extension.substring(1);
 		for (PropertySourceLoader loader : this.loaders) {
@@ -89,6 +94,7 @@ class SystemEnvironmentConfigDataLocationResolver
 				"File extension '%s' is not known to any PropertySourceLoader".formatted(extension));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean hasEnvVariable(String variableName) {
 		return this.environment.apply(variableName) != null;
 	}

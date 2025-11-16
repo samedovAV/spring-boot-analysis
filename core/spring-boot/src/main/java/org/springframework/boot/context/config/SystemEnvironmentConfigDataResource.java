@@ -30,6 +30,9 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataResource} used by {@link SystemEnvironmentConfigDataLoader}.
  *
@@ -50,10 +53,12 @@ class SystemEnvironmentConfigDataResource extends ConfigDataResource {
 		this.environment = environment;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	String getVariableName() {
 		return this.variableName;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	PropertySourceLoader getLoader() {
 		return this.loader;
 	}
@@ -63,11 +68,13 @@ class SystemEnvironmentConfigDataResource extends ConfigDataResource {
 		return (content != null) ? this.loader.load(StringUtils.capitalize(toString()), asResource(content)) : null;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private ByteArrayResource asResource(String content) {
 		return new ByteArrayResource(content.getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -81,11 +88,13 @@ class SystemEnvironmentConfigDataResource extends ConfigDataResource {
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int hashCode() {
 		return Objects.hash(this.variableName, this.loader.getClass());
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		return "system environment variable [" + this.variableName + "] content loaded using "
 				+ ClassUtils.getShortName(this.loader.getClass());

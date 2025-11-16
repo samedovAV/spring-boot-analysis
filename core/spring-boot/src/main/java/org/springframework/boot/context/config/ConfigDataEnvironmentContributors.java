@@ -44,6 +44,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.log.LogMessage;
 import org.springframework.util.ObjectUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * An immutable tree structure of {@link ConfigDataEnvironmentContributors} used to
  * process imports.
@@ -139,6 +142,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		}
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private CharSequence getImportedMessage(Set<ConfigDataResolutionResult> results) {
 		if (results.isEmpty()) {
 			return "Nothing imported";
@@ -149,6 +153,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return message;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	protected final ConfigurableBootstrapContext getBootstrapContext() {
 		return this.bootstrapContext;
 	}
@@ -194,6 +199,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * Returns the root contributor.
 	 * @return the root contributor.
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataEnvironmentContributor getRoot() {
 		return this.root;
 	}
@@ -204,6 +210,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 	 * @param options binder options to apply
 	 * @return a binder instance
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Binder getBinder(@Nullable ConfigDataActivationContext activationContext, BinderOption... options) {
 		return getBinder(activationContext, NO_CONTRIBUTOR_FILTER, options);
 	}
@@ -220,6 +227,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return getBinder(activationContext, filter, asBinderOptionsSet(options));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Set<BinderOption> asBinderOptionsSet(BinderOption... options) {
 		return ObjectUtils.isEmpty(options) ? EnumSet.noneOf(BinderOption.class)
 				: EnumSet.copyOf(Arrays.asList(options));
@@ -236,6 +244,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		return new Binder(sources, placeholdersResolver, null, null, bindHandler);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Iterator<ConfigurationPropertySource> getBinderSources(Predicate<ConfigDataEnvironmentContributor> filter) {
 		return this.root.stream()
 			.filter(this::hasConfigurationPropertySource)
@@ -244,11 +253,13 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 			.iterator();
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean hasConfigurationPropertySource(ConfigDataEnvironmentContributor contributor) {
 		return contributor.getConfigurationPropertySource() != null;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public Iterator<ConfigDataEnvironmentContributor> iterator() {
 		return this.root.iterator();
 	}
@@ -265,6 +276,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public ConfigurableBootstrapContext getBootstrapContext() {
 			return this.contributors.getBootstrapContext();
 		}
@@ -292,6 +304,7 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public Binder getBinder() {
 			Binder binder = this.binder;
 			if (binder == null) {
@@ -302,11 +315,13 @@ class ConfigDataEnvironmentContributors implements Iterable<ConfigDataEnvironmen
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public @Nullable ConfigDataResource getParent() {
 			return this.contributor.getResource();
 		}
 
 		@Override
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		public ConfigurableBootstrapContext getBootstrapContext() {
 			return this.contributors.getBootstrapContext();
 		}

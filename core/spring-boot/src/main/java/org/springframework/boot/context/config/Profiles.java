@@ -43,6 +43,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Provides access to environment profiles that have either been set directly on the
  * {@link Environment} or will be set based on configuration data property values.
@@ -95,6 +98,7 @@ public class Profiles implements Iterable<String> {
 		return asUniqueItemList(getProfiles(environment, binder, validator, Type.ACTIVE), additionalProfiles);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<String> getDefaultProfiles(Environment environment, Binder binder, ProfilesValidator validator) {
 		return asUniqueItemList(getProfiles(environment, binder, validator, Type.DEFAULT));
 	}
@@ -130,12 +134,14 @@ public class Profiles implements Iterable<String> {
 		return !environmentPropertyProfiles.equals(environmentProfiles);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Set<String> merge(Set<String> environmentProfiles, Set<String> bound) {
 		Set<String> result = new LinkedHashSet<>(environmentProfiles);
 		result.addAll(bound);
 		return result;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<String> expandProfiles(@Nullable List<String> profiles) {
 		Deque<String> stack = new ArrayDeque<>();
 		asReversedList(profiles).forEach(stack::push);
@@ -149,6 +155,7 @@ public class Profiles implements Iterable<String> {
 		return asUniqueItemList(expandedProfiles);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<String> asReversedList(@Nullable List<String> list) {
 		if (CollectionUtils.isEmpty(list)) {
 			return Collections.emptyList();
@@ -158,10 +165,12 @@ public class Profiles implements Iterable<String> {
 		return reversed;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<String> asUniqueItemList(Collection<String> profiles) {
 		return asUniqueItemList(profiles, null);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<String> asUniqueItemList(Collection<String> profiles, @Nullable Collection<String> additional) {
 		LinkedHashSet<String> uniqueItems = new LinkedHashSet<>();
 		if (!CollectionUtils.isEmpty(additional)) {
@@ -175,6 +184,7 @@ public class Profiles implements Iterable<String> {
 	 * Return an iterator for all {@link #getAccepted() accepted profiles}.
 	 */
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public Iterator<String> iterator() {
 		return getAccepted().iterator();
 	}
@@ -183,6 +193,7 @@ public class Profiles implements Iterable<String> {
 	 * Return the active profiles.
 	 * @return the active profiles
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public List<String> getActive() {
 		return this.activeProfiles;
 	}
@@ -191,6 +202,7 @@ public class Profiles implements Iterable<String> {
 	 * Return the default profiles.
 	 * @return the active profiles
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public List<String> getDefault() {
 		return this.defaultProfiles;
 	}
@@ -199,6 +211,7 @@ public class Profiles implements Iterable<String> {
 	 * Return the accepted profiles.
 	 * @return the accepted profiles
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public List<String> getAccepted() {
 		return (!this.activeProfiles.isEmpty()) ? this.activeProfiles : this.defaultProfiles;
 	}
@@ -208,11 +221,13 @@ public class Profiles implements Iterable<String> {
 	 * @param profile the profile to test
 	 * @return if the profile is active
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean isAccepted(String profile) {
 		return getAccepted().contains(profile);
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		ToStringCreator creator = new ToStringCreator(this);
 		creator.append("active", getActive().toString());
@@ -248,18 +263,22 @@ public class Profiles implements Iterable<String> {
 			this.defaultValue = defaultValue;
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		String getName() {
 			return this.name;
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		String[] get(Environment environment) {
 			return this.getter.apply(environment);
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		Set<String> getDefaultValue() {
 			return this.defaultValue;
 		}
 
+  @Prove(complexity = Complexity.O_1, n = "", count = {})
 		boolean isMergeWithEnvironmentProfiles() {
 			return this.mergeWithEnvironmentProfiles;
 		}

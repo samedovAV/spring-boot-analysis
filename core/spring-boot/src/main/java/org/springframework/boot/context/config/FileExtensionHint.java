@@ -21,6 +21,9 @@ import java.util.regex.Pattern;
 
 import org.jspecify.annotations.Nullable;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * User-provided hint for an otherwise missing file extension.
  *
@@ -42,6 +45,7 @@ final class FileExtensionHint {
 	 * Return {@code true} if the hint is present.
 	 * @return if the hint is present
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isPresent() {
 		return this.matcher != null;
 	}
@@ -52,11 +56,13 @@ final class FileExtensionHint {
 	 * @param extension the fallback extension
 	 * @return the extension either from the hint or fallback
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	String orElse(String extension) {
 		return (this.matcher != null) ? toString() : extension;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		return (this.matcher != null) ? this.matcher.group(2) : "";
 	}
@@ -66,6 +72,7 @@ final class FileExtensionHint {
 	 * @param value the source value
 	 * @return the {@link FileExtensionHint} (never {@code null})
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static FileExtensionHint from(String value) {
 		Matcher matcher = PATTERN.matcher(value);
 		return (matcher.matches()) ? new FileExtensionHint(matcher) : NONE;
@@ -76,6 +83,7 @@ final class FileExtensionHint {
 	 * @param value the source value
 	 * @return the value without any hint
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	static String removeFrom(String value) {
 		Matcher matcher = PATTERN.matcher(value);
 		return (matcher.matches()) ? matcher.group(1) : value;

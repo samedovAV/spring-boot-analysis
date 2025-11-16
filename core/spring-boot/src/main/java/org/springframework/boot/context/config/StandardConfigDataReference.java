@@ -21,6 +21,9 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * A reference expanded from the original {@link ConfigDataLocation} that can ultimately
  * be resolved to one or more {@link StandardConfigDataResource resources}.
@@ -60,14 +63,17 @@ class StandardConfigDataReference {
 		this.propertySourceLoader = propertySourceLoader;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigDataLocation getConfigDataLocation() {
 		return this.configDataLocation;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	String getResourceLocation() {
 		return this.resourceLocation;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isMandatoryDirectory() {
 		return !this.configDataLocation.isOptional() && this.directory != null;
 	}
@@ -80,15 +86,18 @@ class StandardConfigDataReference {
 		return this.profile;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isSkippable() {
 		return this.configDataLocation.isOptional() || this.directory != null || this.profile != null;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	PropertySourceLoader getPropertySourceLoader() {
 		return this.propertySourceLoader;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -101,11 +110,13 @@ class StandardConfigDataReference {
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int hashCode() {
 		return this.resourceLocation.hashCode();
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		return this.resourceLocation;
 	}

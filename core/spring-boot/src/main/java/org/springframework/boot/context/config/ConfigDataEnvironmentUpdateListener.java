@@ -24,6 +24,9 @@ import org.springframework.boot.context.config.ConfigData.Options;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link EventListener} to listen to {@link Environment} updates triggered by the
  * {@link ConfigDataEnvironmentPostProcessor}.
@@ -53,6 +56,7 @@ public interface ConfigDataEnvironmentUpdateListener extends EventListener {
 	 * Called when {@link Environment} profiles are set.
 	 * @param profiles the profiles being set
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	default void onSetProfiles(Profiles profiles) {
 	}
 

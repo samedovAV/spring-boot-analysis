@@ -71,6 +71,7 @@ class ConfigDataLocationResolvers {
 	}
 
 	@SuppressWarnings("rawtypes")
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<ConfigDataLocationResolver<?>> reorder(List<ConfigDataLocationResolver> resolvers) {
 		List<ConfigDataLocationResolver<?>> reordered = new ArrayList<>(resolvers.size());
 		ConfigDataLocationResolver<?> standardConfigDataLocationResolver = null;
@@ -124,10 +125,12 @@ class ConfigDataLocationResolvers {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private <T> List<T> nonNullList(@Nullable List<? extends T> list) {
 		return (list != null) ? (List<T>) list : Collections.emptyList();
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private <T> List<T> merge(List<T> list1, List<T> list2) {
 		List<T> merged = new ArrayList<>(list1.size() + list2.size());
 		merged.addAll(list1);
@@ -139,6 +142,7 @@ class ConfigDataLocationResolvers {
 	 * Return the resolvers managed by this object.
 	 * @return the resolvers
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	List<ConfigDataLocationResolver<?>> getResolvers() {
 		return this.resolvers;
 	}

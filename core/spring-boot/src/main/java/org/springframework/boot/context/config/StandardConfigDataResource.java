@@ -27,6 +27,9 @@ import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataResource} backed by a {@link Resource}.
  *
@@ -65,6 +68,7 @@ public class StandardConfigDataResource extends ConfigDataResource {
 		this.emptyDirectory = emptyDirectory;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	StandardConfigDataReference getReference() {
 		return this.reference;
 	}
@@ -74,6 +78,7 @@ public class StandardConfigDataResource extends ConfigDataResource {
 	 * @return the underlying resource
 	 * @since 2.4.2
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public Resource getResource() {
 		return this.resource;
 	}
@@ -83,15 +88,18 @@ public class StandardConfigDataResource extends ConfigDataResource {
 	 * @return the profile or {@code null}
 	 * @since 2.4.6
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public @Nullable String getProfile() {
 		return this.reference.getProfile();
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isEmptyDirectory() {
 		return this.emptyDirectory;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -103,21 +111,25 @@ public class StandardConfigDataResource extends ConfigDataResource {
 		return (this.emptyDirectory == other.emptyDirectory) && isSameUnderlyingResource(this.resource, other.resource);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean isSameUnderlyingResource(Resource ours, Resource other) {
 		return ours.equals(other) || isSameFile(getUnderlyingFile(ours), getUnderlyingFile(other));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean isSameFile(@Nullable File ours, @Nullable File other) {
 		return (ours != null) && ours.equals(other);
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int hashCode() {
 		File underlyingFile = getUnderlyingFile(this.resource);
 		return (underlyingFile != null) ? underlyingFile.hashCode() : this.resource.hashCode();
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public String toString() {
 		if (this.resource instanceof FileSystemResource || this.resource instanceof FileUrlResource) {
 			try {
@@ -130,6 +142,7 @@ public class StandardConfigDataResource extends ConfigDataResource {
 		return this.resource.toString();
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private @Nullable File getUnderlyingFile(Resource resource) {
 		try {
 			if (resource instanceof ClassPathResource || resource instanceof FileSystemResource

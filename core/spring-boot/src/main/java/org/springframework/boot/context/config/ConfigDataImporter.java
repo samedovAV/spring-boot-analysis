@@ -31,6 +31,9 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.log.LogMessage;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Imports {@link ConfigData} by {@link ConfigDataLocationResolver resolving} and
  * {@link ConfigDataLoader loading} locations. {@link ConfigDataResource resources} are
@@ -162,10 +165,12 @@ class ConfigDataImporter {
 		return this.notFoundAction;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Set<ConfigDataLocation> getLoadedLocations() {
 		return this.loadedLocations;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	Set<ConfigDataLocation> getOptionalLocations() {
 		return this.optionalLocations;
 	}

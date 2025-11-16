@@ -48,6 +48,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link ConfigDataLocationResolver} for standard locations.
  *
@@ -93,6 +96,7 @@ public class StandardConfigDataLocationResolver
 		this.resourceLoader = new LocationResourceLoader(resourceLoader);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private String[] getConfigNames(Binder binder) {
 		String[] configNames = binder.bind(CONFIG_NAME_PROPERTY, String[].class).orElse(DEFAULT_CONFIG_NAMES);
 		for (String configName : configNames) {
@@ -101,16 +105,19 @@ public class StandardConfigDataLocationResolver
 		return configNames;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void validateConfigName(String name) {
 		Assert.state(!name.contains("*"), () -> "Config name '" + name + "' cannot contain '*'");
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public int getOrder() {
 		return Ordered.LOWEST_PRECEDENCE;
 	}
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
 		return true;
 	}
@@ -243,6 +250,7 @@ public class StandardConfigDataLocationResolver
 						+ "check the location prefix if a different resolver is expected");
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private @Nullable String getLoadableFileExtension(PropertySourceLoader loader, String file) {
 		for (String fileExtension : loader.getFileExtensions()) {
 			if (StringUtils.endsWithIgnoreCase(file, fileExtension)) {
@@ -252,10 +260,12 @@ public class StandardConfigDataLocationResolver
 		return null;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private boolean isDirectory(String resourceLocation) {
 		return resourceLocation.endsWith("/") || resourceLocation.endsWith(File.separator);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<StandardConfigDataResource> resolve(Set<StandardConfigDataReference> references) {
 		List<StandardConfigDataResource> resolved = new ArrayList<>();
 		for (StandardConfigDataReference reference : references) {
@@ -278,6 +288,7 @@ public class StandardConfigDataLocationResolver
 		return empty;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Set<StandardConfigDataResource> resolveEmptyDirectories(StandardConfigDataReference reference) {
 		if (!this.resourceLoader.isPattern(reference.getResourceLocation())) {
 			return resolveNonPatternEmptyDirectories(reference);
@@ -285,6 +296,7 @@ public class StandardConfigDataLocationResolver
 		return resolvePatternEmptyDirectories(reference);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Set<StandardConfigDataResource> resolveNonPatternEmptyDirectories(StandardConfigDataReference reference) {
 		String directory = reference.getDirectory();
 		Assert.state(directory != null, "'directory' must not be null");
@@ -293,6 +305,7 @@ public class StandardConfigDataLocationResolver
 				: Collections.singleton(new StandardConfigDataResource(reference, resource, true));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private Set<StandardConfigDataResource> resolvePatternEmptyDirectories(StandardConfigDataReference reference) {
 		String directory = reference.getDirectory();
 		Assert.state(directory != null, "'directory' must not be null");
@@ -308,6 +321,7 @@ public class StandardConfigDataLocationResolver
 			.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<StandardConfigDataResource> resolve(StandardConfigDataReference reference) {
 		if (!this.resourceLoader.isPattern(reference.getResourceLocation())) {
 			return resolveNonPattern(reference);
@@ -315,6 +329,7 @@ public class StandardConfigDataLocationResolver
 		return resolvePattern(reference);
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<StandardConfigDataResource> resolveNonPattern(StandardConfigDataReference reference) {
 		Resource resource = this.resourceLoader.getResource(reference.getResourceLocation());
 		if (!resource.exists() && reference.isSkippable()) {
@@ -324,6 +339,7 @@ public class StandardConfigDataLocationResolver
 		return Collections.singletonList(createConfigResourceLocation(reference, resource));
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private List<StandardConfigDataResource> resolvePattern(StandardConfigDataReference reference) {
 		List<StandardConfigDataResource> resolved = new ArrayList<>();
 		for (Resource resource : this.resourceLoader.getResources(reference.getResourceLocation(), ResourceType.FILE)) {
@@ -337,6 +353,7 @@ public class StandardConfigDataLocationResolver
 		return resolved;
 	}
 
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	private void logSkippingResource(StandardConfigDataReference reference) {
 		this.logger.trace(LogMessage.format("Skipping missing resource %s", reference));
 	}

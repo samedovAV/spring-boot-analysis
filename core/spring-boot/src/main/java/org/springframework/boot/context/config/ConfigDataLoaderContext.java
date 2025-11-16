@@ -19,6 +19,9 @@ package org.springframework.boot.context.config;
 import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.boot.bootstrap.ConfigurableBootstrapContext;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Context provided to {@link ConfigDataLoader} methods.
  *
@@ -32,6 +35,7 @@ public interface ConfigDataLoaderContext {
 	 * {@link EnvironmentPostProcessor EnvironmentPostProcessors}.
 	 * @return the bootstrap context
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	ConfigurableBootstrapContext getBootstrapContext();
 
 }

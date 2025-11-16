@@ -27,6 +27,9 @@ import org.springframework.boot.context.properties.bind.BindableRuntimeHintsRegi
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * {@link RuntimeHintsRegistrar} for {@link ConfigDataProperties}.
  *
@@ -35,6 +38,7 @@ import org.springframework.util.ReflectionUtils;
 class ConfigDataPropertiesRuntimeHints implements RuntimeHintsRegistrar {
 
 	@Override
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	public void registerHints(RuntimeHints hints, @Nullable ClassLoader classLoader) {
 		BindableRuntimeHintsRegistrar.forTypes(ConfigDataProperties.class).registerHints(hints);
 		Method method = ReflectionUtils.findMethod(ConfigDataLocation.class, "of", String.class);

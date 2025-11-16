@@ -29,6 +29,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 
+import com.samedov.annotation.Complexity;
+import com.samedov.annotation.Prove;
+
 /**
  * Strategy interface used to resolve {@link ConfigDataLocation locations} into one or
  * more {@link ConfigDataResource resources}. Implementations should be added as a
@@ -60,6 +63,7 @@ public interface ConfigDataLocationResolver<R extends ConfigDataResource> {
 	 * @param location the location to check.
 	 * @return if the location is supported by this resolver
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location);
 
 	/**
@@ -72,6 +76,7 @@ public interface ConfigDataLocationResolver<R extends ConfigDataResource> {
 	 * be found
 	 * @throws ConfigDataResourceNotFoundException if a resolved resource cannot be found
 	 */
+	@Prove(complexity = Complexity.O_1, n = "", count = {})
 	List<R> resolve(ConfigDataLocationResolverContext context, ConfigDataLocation location)
 			throws ConfigDataLocationNotFoundException, ConfigDataResourceNotFoundException;
 
