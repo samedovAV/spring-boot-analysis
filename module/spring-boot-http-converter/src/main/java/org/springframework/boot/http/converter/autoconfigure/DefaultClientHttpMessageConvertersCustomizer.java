@@ -43,25 +43,37 @@ class DefaultClientHttpMessageConvertersCustomizer implements ClientHttpMessageC
 	@Override
 	public void customize(ClientBuilder builder) {
 		if (this.legacyConverters != null) {
-			this.legacyConverters.forEach(builder::customMessageConverter);
+			this.legacyConverters.forEach(builder::addCustomConverter);
 		}
 		else {
 			builder.registerDefaults();
 			this.converters.forEach((converter) -> {
 				if (converter instanceof StringHttpMessageConverter) {
-					builder.stringMessageConverter(converter);
+					builder.withStringConverter(converter);
 				}
 				else if (converter instanceof KotlinSerializationJsonHttpMessageConverter) {
-					builder.customMessageConverter(converter);
+					builder.withKotlinSerializationJsonConverter(converter);
 				}
-				else if (converter.getSupportedMediaTypes().contains(MediaType.APPLICATION_JSON)) {
-					builder.jsonMessageConverter(converter);
+				else if (supportsMediaType(converter, MediaType.APPLICATION_JSON)) {
+					builder.withJsonConverter(converter);
+				}
+				else if (supportsMediaType(converter, MediaType.APPLICATION_XML)) {
+					builder.withXmlConverter(converter);
 				}
 				else {
-					builder.customMessageConverter(converter);
+					builder.addCustomConverter(converter);
 				}
 			});
 		}
+	}
+
+	private static boolean supportsMediaType(HttpMessageConverter<?> converter, MediaType mediaType) {
+		for (MediaType supportedMediaType : converter.getSupportedMediaTypes()) {
+			if (supportedMediaType.equalsTypeAndSubtype(mediaType)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
